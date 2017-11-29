@@ -6,17 +6,13 @@ OpenFaaS function that returns SSL/TLS certificate information for a given URL
 
 ### Usage
 
-Deploy example for OpenFaaS on Kubernetes:
+Deploy:
 
 ```bash
-faas-cli deploy --name=certinfo \
-    --image=stefanprodan/certinfo:latest \		
-    --fprocess="./certinfo" \		
-    --network=openfaas-fn \		
-    --gateway=http://<GATEWAY-IP> 
+faas-cli deploy -f ./cerinfo.yml --gateway=http://<GATEWAY-IP> 
 ```
 
-Invoke example:
+Invoke:
 
 ```bash
 $ echo -n "www.openfaas.com" | faas-cli invoke certinfo --gateway=<GATEWAY-IP>
