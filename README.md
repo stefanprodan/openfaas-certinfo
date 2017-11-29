@@ -9,7 +9,7 @@ OpenFaaS function that returns SSL/TLS certificate information for a given URL
 Deploy:
 
 ```bash
-faas-cli deploy -f ./cerinfo.yml --gateway=http://<GATEWAY-IP> 
+faas-cli deploy -f ./certinfo.yml --gateway=http://<GATEWAY-IP> 
 ```
 
 Invoke:
@@ -26,3 +26,10 @@ NotAfter 2018-01-04 23:54:56 +0000 UTC
 SANs [www.openfaas.com]
 ```
 
+Local build:
+
+```bash
+git clone https://github.com/stefanprodan/openfaas-certinfo
+cd openfaas-certinfo
+faas-cli build -f ./certinfo.yml
+```
