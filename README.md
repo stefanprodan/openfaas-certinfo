@@ -1,5 +1,7 @@
 # openfaas-certinfo
 
+[![Build Status](https://travis-ci.org/stefanprodan/openfaas-certinfo.svg?branch=master)](https://travis-ci.org/stefanprodan/openfaas-certinfo)
+
 OpenFaaS function that returns SSL/TLS certificate information for a given URL
 
 ### Usage
@@ -8,7 +10,7 @@ Deploy example for OpenFaaS on Kubernetes:
 
 ```bash
 faas-cli deploy --name=certinfo \
-    --image=functions/certinfo:latest \		
+    --image=stefanprodan/certinfo:latest \		
     --fprocess="./certinfo" \		
     --network=openfaas-fn \		
     --gateway=http://<GATEWAY-IP> 
