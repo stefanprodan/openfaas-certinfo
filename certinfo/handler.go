@@ -23,7 +23,7 @@ func Handle(req []byte) string {
 	address := u.Hostname() + ":443"
 	ipConn, err := net.DialTimeout("tcp", address, 5*time.Second)
 	if err != nil {
-		return fmt.Sprintf("SSL/TLS not enabed on%v\nDial error: %v", u.Hostname(), err)
+		return fmt.Sprintf("SSL/TLS not enabed on %v\nDial error: %v", u.Hostname(), err)
 	}
 
 	defer ipConn.Close()

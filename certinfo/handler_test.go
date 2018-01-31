@@ -34,3 +34,13 @@ func TestHandleReturnsErrorResponse(t *testing.T) {
 		t.Fatalf("\nExpected: \n%v\nGot: \n%v", expected, resp)
 	}
 }
+
+func TestHandleTimeoutResponse(t *testing.T) {
+	expected := "timeout"
+	resp := Handle([]byte("alexellis.io"))
+
+	r := regexp.MustCompile("(?m:" + expected + ")")
+	if !r.MatchString(resp) {
+		t.Fatalf("\nExpected: \n%v\nGot: \n%v", expected, resp)
+	}
+}
