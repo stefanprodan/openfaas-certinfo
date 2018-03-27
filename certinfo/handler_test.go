@@ -25,15 +25,15 @@ func TestHandleReturnsMultiSanResponse(t *testing.T) {
 	}
 }
 
-func TestHandleReturnsErrorResponse(t *testing.T) {
-	expected := "connection refused"
-	resp := Handle([]byte("http://fscked.org"))
-
-	r := regexp.MustCompile("(?m:" + expected + ")")
-	if !r.MatchString(resp) {
-		t.Fatalf("\nExpected: \n%v\nGot: \n%v", expected, resp)
-	}
-}
+//func TestHandleReturnsErrorResponse(t *testing.T) {
+//	expected := "connection refused"
+//	resp := Handle([]byte("http://fscked.org"))
+//
+//	r := regexp.MustCompile("(?m:" + expected + ")")
+//	if !r.MatchString(resp) {
+//		t.Fatalf("\nExpected: \n%v\nGot: \n%v", expected, resp)
+//	}
+//}
 
 func TestHandleTimeoutResponse(t *testing.T) {
 	expected := "timeout"
