@@ -9,6 +9,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"github.com/dustin/go-humanize"
 )
 
 func Handle(req []byte) string {
@@ -49,13 +51,14 @@ func Handle(req []byte) string {
 
 	if len(asJson) > 0 && asJson == "output=json" {
 		res := struct {
-			Host       string
-			Port       string
-			Issuer     string
-			CommonName string
-			NotBefore  time.Time
-			NotAfter   time.Time
-			SANs       []string
+			Host          string
+			Port          string
+			Issuer        string
+			CommonName    string
+			NotBefore     time.Time
+			NotAfter      time.Time
+			SANs          []string
+			TimeRemaining string
 		}{
 			host,
 			port,
@@ -64,6 +67,7 @@ func Handle(req []byte) string {
 			cert.NotBefore,
 			cert.NotAfter,
 			cert.DNSNames,
+			humanize.Time(cert.NotAfter),
 		}
 
 		b, err := json.Marshal(res)
@@ -73,6 +77,6 @@ func Handle(req []byte) string {
 		return string(b)
 	}
 
-	return fmt.Sprintf("Host %v\nPort %v\nIssuer %v\nCommonName %v\nNotBefore %v\nNotAfter %v\nSANs %v\n",
-		host, port, cert.Issuer.CommonName, cert.Subject.CommonName, cert.NotBefore, cert.NotAfter, cert.DNSNames)
+	return fmt.Sprintf("Host %v\nPort %v\nIssuer %v\nCommonName %v\nNotBefore %v\nNotAfter %v\nSANs %v\nTimeRemaining %v",
+		host, port, cert.Issuer.CommonName, cert.Subject.CommonName, cert.NotBefore, cert.NotAfter, cert.DNSNames, humanize.Time(cert.NotAfter))
 }
