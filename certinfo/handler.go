@@ -80,5 +80,5 @@ func Handle(req []byte) string {
 	}
 
 	return fmt.Sprintf("Host %v\nPort %v\nIssuer %v\nCommonName %v\nNotBefore %v\nNotAfter %v\nNotAfterUnix %v\nSANs %v\nTimeRemaining %v",
-		host, port, cert.Issuer.CommonName, cert.Subject.CommonName, cert.NotBefore, cert.NotAfter, cert.NotAfterUnix, cert.DNSNames, humanize.Time(cert.NotAfter))
+		host, port, cert.Issuer.CommonName, cert.Subject.CommonName, cert.NotBefore, cert.NotAfter, cert.NotAfter.Unix(), cert.DNSNames, humanize.Time(cert.NotAfter))
 }
