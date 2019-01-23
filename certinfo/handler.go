@@ -57,6 +57,7 @@ func Handle(req []byte) string {
 			CommonName    string
 			NotBefore     time.Time
 			NotAfter      time.Time
+			NotAfterUnix  int64
 			SANs          []string
 			TimeRemaining string
 		}{
@@ -66,6 +67,7 @@ func Handle(req []byte) string {
 			cert.Subject.CommonName,
 			cert.NotBefore,
 			cert.NotAfter,
+			cert.NotAfter.Unix(),
 			cert.DNSNames,
 			humanize.Time(cert.NotAfter),
 		}
@@ -77,6 +79,6 @@ func Handle(req []byte) string {
 		return string(b)
 	}
 
-	return fmt.Sprintf("Host %v\nPort %v\nIssuer %v\nCommonName %v\nNotBefore %v\nNotAfter %v\nSANs %v\nTimeRemaining %v",
-		host, port, cert.Issuer.CommonName, cert.Subject.CommonName, cert.NotBefore, cert.NotAfter, cert.DNSNames, humanize.Time(cert.NotAfter))
+	return fmt.Sprintf("Host %v\nPort %v\nIssuer %v\nCommonName %v\nNotBefore %v\nNotAfter %v\nNotAfterUnix %v\nSANs %v\nTimeRemaining %v",
+		host, port, cert.Issuer.CommonName, cert.Subject.CommonName, cert.NotBefore, cert.NotAfter, cert.NotAfter.Unix(), cert.DNSNames, humanize.Time(cert.NotAfter))
 }
