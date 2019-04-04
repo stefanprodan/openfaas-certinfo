@@ -1,14 +1,18 @@
 sudo: required
+language: go
+
+go:
+  - 1.12.x
 
 services:
   - docker
 
+addons:
+  apt:
+    packages:
+      - docker-ce
+
 before_install:
-  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  - sudo apt-get update
-  - sudo apt-get -y install docker-ce
-  - sudo service docker restart
   - curl -sL cli.openfaas.com | sudo sh
 
 script:
