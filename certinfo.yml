@@ -1,9 +1,9 @@
 provider:
-  name: faas
+  name: openfaas
   gateway: http://localhost:8080
 
 functions:
   certinfo:
     lang: go
     handler: ./certinfo
-    image: stefanprodan/certinfo:0.5.0
+    image: stefanprodan/certinfo:1.0.0
