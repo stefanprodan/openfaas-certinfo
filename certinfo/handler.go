@@ -5,29 +5,37 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"net/http"
 	"net/url"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/dustin/go-humanize"
+
+	handler "github.com/openfaas/templates-sdk/go-http"
 )
 
-func Handle(req []byte) string {
-	request := strings.ToLower(string(req))
-	if !strings.HasPrefix(request, "http") {
-		request = "https://" + request
-	}
+func Handle(req handler.Request) (handler.Response, error) {
+	var err error
+
+	request := strings.ToLower(string(req.Body))
 
 	u, err := url.Parse(request)
 	if err != nil {
-		return fmt.Sprintf("Error: %v", err)
+		return handler.Response{
+			Body:       []byte(err.Error()),
+			StatusCode: http.StatusInternalServerError,
+		}, err
 	}
 
 	address := u.Hostname() + ":443"
 	ipConn, err := net.DialTimeout("tcp", address, 5*time.Second)
 	if err != nil {
-		return fmt.Sprintf("SSL/TLS not enabed on %v\nDial error: %v", u.Hostname(), err)
+		return handler.Response{
+			Body:       []byte(fmt.Sprintf("SSL/TLS not enabed on %v\nDial error: %v", u.Hostname(), err)),
+			StatusCode: http.StatusInternalServerError,
+		}, err
 	}
 
 	defer ipConn.Close()
@@ -36,14 +44,20 @@ func Handle(req []byte) string {
 		ServerName:         u.Hostname(),
 	})
 	if err = conn.Handshake(); err != nil {
-		return fmt.Sprintf("Invalid SSL/TLS for %v\nHandshake error: %v", address, err)
+		return handler.Response{
+			Body:       []byte(fmt.Sprintf("Invalid SSL/TLS for %v\nHandshake error: %v", address, err)),
+			StatusCode: http.StatusInternalServerError,
+		}, err
 	}
 
 	defer conn.Close()
 	addr := conn.RemoteAddr()
 	host, port, err := net.SplitHostPort(addr.String())
 	if err != nil {
-		return fmt.Sprintf("Error: %v", err)
+		return handler.Response{
+			Body:       []byte(err.Error()),
+			StatusCode: http.StatusInternalServerError,
+		}, err
 	}
 
 	cert := conn.ConnectionState().PeerCertificates[0]
@@ -74,11 +88,22 @@ func Handle(req []byte) string {
 
 		b, err := json.Marshal(res)
 		if err != nil {
-			return fmt.Sprintf("Error: %v", err)
+			return handler.Response{
+				Body:       []byte(err.Error()),
+				StatusCode: http.StatusInternalServerError,
+			}, err
 		}
-		return string(b)
+
+		return handler.Response{
+			Body:       b,
+			StatusCode: http.StatusOK,
+		}, err
 	}
 
-	return fmt.Sprintf("Host %v\nPort %v\nIssuer %v\nCommonName %v\nNotBefore %v\nNotAfter %v\nNotAfterUnix %v\nSANs %v\nTimeRemaining %v",
+	message := fmt.Sprintf("Host %v\nPort %v\nIssuer %v\nCommonName %v\nNotBefore %v\nNotAfter %v\nNotAfterUnix %v\nSANs %v\nTimeRemaining %v",
 		host, port, cert.Issuer.CommonName, cert.Subject.CommonName, cert.NotBefore, cert.NotAfter, cert.NotAfter.Unix(), cert.DNSNames, humanize.Time(cert.NotAfter))
+	return handler.Response{
+		Body:       []byte(message),
+		StatusCode: http.StatusOK,
+	}, err
 }
