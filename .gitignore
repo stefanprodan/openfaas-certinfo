@@ -17,3 +17,6 @@
 # OpenFaaS
 build/
 template/
+
+template
+build

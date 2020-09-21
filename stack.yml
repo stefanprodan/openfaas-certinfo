@@ -1,9 +1,11 @@
+version: 1.0
 provider:
   name: openfaas
-  gateway: http://localhost:8080
-
+  gateway: http://127.0.0.1:8080
 functions:
   certinfo:
-    lang: go
+    lang: golang-http
     handler: ./certinfo
-    image: stefanprodan/certinfo
+    image: certinfo:latest
+    build_args:
+      GO111MODULE: on

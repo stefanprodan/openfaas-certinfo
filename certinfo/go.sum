@@ -1,0 +1,4 @@
+github.com/dustin/go-humanize v1.0.0 h1:VSnTsYCnlFHaM2/igO1h6X3HA71jcobQuxemgkq4zYo=
+github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
+github.com/openfaas/templates-sdk v0.0.0-20200723110415-a699ec277c12 h1:P5IjrDQug3GRIfNC9/S7+UvXAbNdenhnHtjz4Qs8Kd8=
+github.com/openfaas/templates-sdk v0.0.0-20200723110415-a699ec277c12/go.mod h1:JWcVHdzlHcR7nLuaDL88Mz68wOqDvOn0CLO6t27OMhk=
